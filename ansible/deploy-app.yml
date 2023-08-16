@@ -1,0 +1,28 @@
+- name: "Deploy latest app"
+  hosts: toggle[0]
+  user: ubuntu
+  gather_facts: false
+  become: yes
+  vars:
+    ENVIRONMENT_NAME: capstone-project
+    CIRCLE_WORKFLOW_ID: "{{ lookup('env', 'CIRCLE_WORKFLOW_ID') }}"
+  tasks:
+    - name: Update the deployment to run the latest Build
+      shell: "./bin/kubectl set image deployments/{{ ENVIRONMENT_NAME }}-deployment {{ ENVIRONMENT_NAME }}-app=trungnt102/{{ ENVIRONMENT_NAME }}:{{ CIRCLE_WORKFLOW_ID }}"
+      args:
+        chdir: $HOME
+
+    - name: Check if deployment is successful
+      shell: "./bin/kubectl rollout status deployments/{{ ENVIRONMENT_NAME }}-deployment"
+      args:
+        chdir: $HOME
+
+    - name: Get deployment
+      shell: "./bin/kubectl get deployments"
+      args:
+        chdir: $HOME
+
+    - name: Get service
+      shell: "./bin/kubectl get services"
+      args:
+        chdir: $HOME

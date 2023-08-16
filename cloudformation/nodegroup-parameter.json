@@ -1,0 +1,7 @@
+[
+  "EnvironmentName=capstone-project",
+  "MinSize=2",
+  "MaxSize=2",
+  "DesiredSize=2",
+  "KeyPairName=keyp5"
+]

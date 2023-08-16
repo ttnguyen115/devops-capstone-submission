@@ -1,0 +1,8 @@
+- name: "Unzip The AWS CLI"
+  unarchive:
+    src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: ~/
+    remote_src: yes
+
+- name: "Install the AWS CLI"
+  shell: ~/aws/install -u

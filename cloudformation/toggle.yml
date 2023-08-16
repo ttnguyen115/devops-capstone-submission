@@ -1,0 +1,57 @@
+Description: >
+  Capstone Project
+  Creates two individual hosts to toggle the EKS-Cluster
+
+Parameters:
+  EnvironmentName:
+    Description: An Environment name that will be prefixed to resources
+    Default: capstone-project
+    Type: String
+  SSHKeyName:
+    Description: SSH key for toggle access
+    Default: keyp5
+    Type: String
+  amiImageId:
+    Description: Defines the Image-ID of the OS to deploy
+    Default: ami-068663a3c619dd892
+    Type: String
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${EnvironmentName}-toggle-SG
+      GroupDescription: Allow port 22 for toggle
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  toggleHost1:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      KeyName: !Ref SSHKeyName
+      ImageId: !Ref amiImageId
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-toggle1
+        - Key: Project
+          Value: !Ref EnvironmentName
+
+  toggleHost2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      KeyName: !Ref SSHKeyName
+      ImageId: !Ref amiImageId
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-toggle2
+        - Key: Project
+          Value: !Ref EnvironmentName
