@@ -2,14 +2,14 @@ version: 2.1
 
 commands:
   destroy-environment:
-    description: Destroy stasks when fail
+    description: Destroy stacks when fail
     parameters:
       ENVIRONMENT_NAME:
         type: string
         default: ${ENVIRONMENT_NAME}
     steps:
       - run:
-          name: Destroy stask
+          name: Destroy stacks
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name "${ENVIRONMENT_NAME}-eks-network" 
@@ -72,18 +72,19 @@ jobs:
       - run:
           name: Build docker container
           command: |
-            echo "image name: -> " $DOCKER_IMAGE_NAME .
+            echo "image name: -> " capstone .
             echo "CIRCLE_WORKFLOW_ID: -> " $CIRCLE_WORKFLOW_ID        
-            docker build --tag=$DOCKER_IMAGE_NAME .
+            docker build --tag=capstone .
             echo "Build completed"
             docker image ls
       - run:
           name: Upload Docker to Dockerhub
           command: |
-            echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
+            echo "Docker ID and Image: capstone"
             docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-            docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-            docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+            docker tag capstone $DOCKERHUB_USERNAME/capstone:$CIRCLE_WORKFLOW_ID
+            docker push $DOCKERHUB_USERNAME/capstone:$CIRCLE_WORKFLOW_ID
+
 
   deploy-infrastructure:
     docker:
@@ -102,6 +103,7 @@ jobs:
               --stack-name "${ENVIRONMENT_NAME}-eks-network" \
               --region ${AWS_DEFAULT_REGION} \
               --parameter-overrides file://cloudformation/network-parameter.json
+
       - run:
           name: Ensure EKS Cluster exists
           command: |
@@ -174,6 +176,7 @@ jobs:
                  cd ansible                  
                  ansible-playbook -i ~/inventory.txt configure-server.yml
                fi
+
 
   configure-cluster:
     docker:

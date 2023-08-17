@@ -130,7 +130,7 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvironmentName}-PublicSubnet1
         - Key: kubernetes.io/role/elb
-          Value: 1
+          Value: '1'
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -151,7 +151,7 @@ Resources:
         - Key: Name
           Value: !Sub ${EnvironmentName}-PublicSubnet2
         - Key: kubernetes.io/role/elb
-          Value: 1
+          Value: '1'
 
   PublicSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
