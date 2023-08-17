@@ -81,7 +81,6 @@ jobs:
           name: Upload Docker to Dockerhub
           command: |
             echo "Docker ID and Image: capstone"
-            docker logout
             docker login -u "$DOCKER_HUB_USERNAME" --password-stdin < $(echo "$DOCKER_HUB_PASSWORD")
             docker tag capstone $DOCKERHUB_USERNAME/capstone:$CIRCLE_WORKFLOW_ID
             docker push $DOCKERHUB_USERNAME/capstone:$CIRCLE_WORKFLOW_ID
