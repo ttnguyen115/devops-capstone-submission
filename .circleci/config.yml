@@ -82,8 +82,8 @@ jobs:
           command: |
             echo "Docker ID and Image: capstone"
             echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
-            docker tag capstone $DOCKERHUB_USERNAME/capstone:$CIRCLE_WORKFLOW_ID
-            docker push $DOCKERHUB_USERNAME/capstone:$CIRCLE_WORKFLOW_ID
+            docker tag capstone $DOCKER_HUB_USERNAME/uda-capstone:capstone
+            docker push $DOCKER_HUB_USERNAME/uda-capstone:capstone
 
 
   deploy-infrastructure:
