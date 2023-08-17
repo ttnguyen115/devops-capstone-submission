@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: capstone-project-app
-          image: trungnt102/api
+          image: ttnguyen115/api
           ports:
             - containerPort: 80
